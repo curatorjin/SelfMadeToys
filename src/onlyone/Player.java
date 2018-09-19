@@ -32,9 +32,7 @@ abstract class Player {
 		List<Card> hand = new ArrayList<>();
 		for (Card card : list) {
 			if (hand.contains(card)) {
-				Deck.putToDeskDeck(card);
-				Deck.putToDeskDeck(card);
-				hand.remove(card);
+				handStuff.removeCard(card);
 			}else {
 				hand.add(card);
 			}
