@@ -12,7 +12,8 @@ public class Deck {
 	public static List<Card> originDeck = new ArrayList<>();
 	public static List<Card> answer = new ArrayList<>();
 	public static Map<String, Map<String, Integer>> deskDeck = new HashMap<String, Map<String, Integer>>();
-
+	public Map<String, Map<String, Integer>> self = new HashMap<String, Map<String, Integer>>();
+	
 	static {
 		String[] strings = new String[] { "现场", "犯人", "动机", "凶器", "宇宙", "池塘", "家", "山", "蝗虫", "JK", "不良少年", "科长", "情杀",
 				"觊觎金钱", "随机杀人", "仇杀", "豆腐", "毒药", "刀", "麻绳" };
@@ -84,20 +85,55 @@ public class Deck {
 
 	public void put(Card card) {
 		cards.add(card);
+		Map<String, Integer> map = self.get(card.getKind());
+		if (map == null) {
+			self.put(card.getKind(), new HashMap<>());
+		}
+		Integer num = self.get(card.getKind()).get(card.getContent());
+		if (num == null) {
+			num = 1;
+		} else {
+			num += 1;
+		}
+		self.get(card.getKind()).put(card.getContent(), num);
 	}
 
 	public void modifyPut(Card card) {
 		if (cards.contains(card)) {
-			cards.remove(card);
+			removeCard(card);
 			putToDeskDeck(card);
 			putToDeskDeck(card);
 		} else {
 			cards.add(card);
+			Map<String, Integer> map = self.get(card.getKind());
+			if (map == null) {
+				self.put(card.getKind(), new HashMap<>());
+			}
+			Integer num = self.get(card.getKind()).get(card.getContent());
+			if (num == null) {
+				num = 1;
+			} else {
+				num += 1;
+			}
+			self.get(card.getKind()).put(card.getContent(), num);
 		}
 	}
 
 	public Card removeCard(Card card) {
 		cards.remove(card);
+		Map<String, Integer> map = self.get(card.getKind());
+		if (map == null) {
+			self.put(card.getKind(), new HashMap<>());
+		}
+		Integer num = self.get(card.getKind()).get(card.getContent());
+		if (num == null || num == 0) {
+			num = 0;
+		} else {
+			num -= 1;
+		}
+		self.get(card.getKind()).put(card.getContent(), num);
+		putToDeskDeck(card);
+		putToDeskDeck(card);
 		return card;
 	}
 
@@ -110,4 +146,19 @@ public class Deck {
 		}
 		return list;
 	}
+
+	
+	public void viewDeck() {
+		Set<String> kindSet = self.keySet();
+		for (String string : kindSet) {
+			System.out.println(string + ":");
+			Map<String, Integer> countMap = self.get(string);
+			Set<String> contentSet = countMap.keySet();
+			for (String string2 : contentSet) {
+				System.out.println(string2 + ":" + countMap.get(string2) + "张");
+			}
+		}
+	}
+
+
 }
