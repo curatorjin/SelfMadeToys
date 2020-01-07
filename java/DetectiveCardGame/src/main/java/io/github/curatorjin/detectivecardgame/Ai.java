@@ -1,4 +1,4 @@
-package onlyone;
+package io.github.curatorjin.detectivecardgame;
 
 import java.io.BufferedReader;
 import java.util.List;

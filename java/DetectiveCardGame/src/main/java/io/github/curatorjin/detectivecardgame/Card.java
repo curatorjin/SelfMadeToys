@@ -1,4 +1,4 @@
-package onlyone;
+package io.github.curatorjin.detectivecardgame;
 
 public class Card {
 	private String kind;
@@ -49,11 +49,8 @@ public class Card {
 		} else if (!content.equals(other.content))
 			return false;
 		if (kind == null) {
-			if (other.kind != null)
-				return false;
-		} else if (!kind.equals(other.kind))
-			return false;
-		return true;
+			return other.kind == null;
+		} else return kind.equals(other.kind);
 	}
 
 	@Override

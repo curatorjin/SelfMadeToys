@@ -1,4 +1,4 @@
-package onlyone;
+package io.github.curatorjin.detectivecardgame;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,12 +41,10 @@ public class Man extends Player{
 			List<Card> listForDraw = player.getHandDeck().getKind(input);
 			if (listForDraw.size() == 0) {
 				System.out.println("对方已经没有这种牌了……");
-				continue;
 			}else {
 				Random random = new Random();
 				int i = random.nextInt(listForDraw.size());
-				Card drewOne = listForDraw.get(i);
-				return drewOne;
+				return listForDraw.get(i);
 			}
 		}
 	}
