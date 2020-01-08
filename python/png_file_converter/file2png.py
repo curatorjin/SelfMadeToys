@@ -45,7 +45,7 @@ def encrypted_file(target, file_info, output='result.png'):
 
 
 def main():
-    target = 'data/Theme1.ogg'
+    target = 'test/Theme1.ogg'
     length = get_total_length(target)
     file_encode = encode_file(target)
     file_encode += [255 for i in range(0, (3 - len(file_encode)) % 3)]
