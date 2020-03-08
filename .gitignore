@@ -1,0 +1,16 @@
+# Java
+.class
+bin/
+build/
+
+# Python
+*.pyc
+__pycache__/
+
+
+# IDEA&gradle
+.idea/
+.gradle/
+gradle/
+gradlew
+gradlew.bat

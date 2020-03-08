@@ -1,0 +1,12 @@
+# 所有的任务并行开始
+# example
+# I模块名
+# L wait: 单次执行延迟
+# L loop: 循环次数(小于0不执行，等于0循环到手动停止进程，大于0为循环次数)
+
+test_task1:
+  wait: 2
+  loop: 7
+test_task2:
+  wait: 1
+  loop: 14
