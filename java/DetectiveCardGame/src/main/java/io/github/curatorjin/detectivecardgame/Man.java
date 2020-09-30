@@ -8,7 +8,7 @@ import java.util.Random;
 public class Man extends Player{
 	
 	@Override
-	public Card draw(Player player, BufferedReader br) {
+	public void draw(Player player, BufferedReader br) {
 		while(true) {
 			System.out.println("请选择要抽取的种类：");
 			System.out.println("1.现场\t2.犯人\t3.动机\t4.凶器");
@@ -44,7 +44,10 @@ public class Man extends Player{
 			}else {
 				Random random = new Random();
 				int i = random.nextInt(listForDraw.size());
-				return listForDraw.get(i);
+				Card drawnCard = listForDraw.get(i);
+				player.getHandDeck().removeCard(drawnCard);
+				this.getHandDeck().modifyPut(drawnCard);
+				break;
 			}
 		}
 	}

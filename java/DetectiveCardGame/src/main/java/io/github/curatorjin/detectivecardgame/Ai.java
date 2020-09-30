@@ -7,14 +7,14 @@ import java.util.Random;
 public class Ai extends Player{
 	
 	@Override
-	public Card draw(Player player, BufferedReader br) {
+	public void draw(Player player, BufferedReader br) {
 		List<Card> stuff = player.getHandStuff();
-		if (stuff.size() == 0) {
-			return null;
-		}else {
+		if (stuff.size() != 0) {
 			Random random = new Random();
 			int i = random.nextInt(stuff.size());
-			return stuff.remove(i);
+			Card drawnCard = stuff.get(i);
+			player.getHandDeck().removeCard(drawnCard);
+			this.getHandDeck().modifyPut(drawnCard);
 		}
 	}
 

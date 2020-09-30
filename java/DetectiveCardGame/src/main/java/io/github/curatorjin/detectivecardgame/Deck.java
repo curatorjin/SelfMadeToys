@@ -1,18 +1,11 @@
 package io.github.curatorjin.detectivecardgame;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class Deck {
     public static List<Card> originDeck = new ArrayList<>();
     public static List<Card> answer = new ArrayList<>();
     public static Map<String, Map<String, Integer>> deskDeck = new HashMap<>();
-    public Map<String, Map<String, Integer>> self = new HashMap<>();
 
     static {
         String[] strings = new String[]{"现场", "犯人", "动机", "凶器", "宇宙", "池塘", "家", "山", "蝗虫", "JK", "不良少年", "科长", "情杀",
@@ -47,6 +40,9 @@ public class Deck {
         }
     }
 
+    public Map<String, Map<String, Integer>> count = new HashMap<>();
+    private List<Card> cards = new ArrayList<>(); // 牌组内的卡
+
     public static void putToDeskDeck(Card card) {
         deskDeck.computeIfAbsent(card.getKind(), k -> new HashMap<>());
         Integer num = deskDeck.get(card.getKind()).get(card.getContent());
@@ -70,8 +66,6 @@ public class Deck {
         }
     }
 
-    private List<Card> cards = new ArrayList<>(); // 牌组内的卡
-
     public List<Card> getCards() {
         return cards;
     }
@@ -80,49 +74,35 @@ public class Deck {
         this.cards = cards;
     }
 
-    public void put(Card card) {
-        cards.add(card);
-        self.computeIfAbsent(card.getKind(), k -> new HashMap<>());
-        Integer num = self.get(card.getKind()).get(card.getContent());
-        if (num == null) {
-            num = 1;
-        } else {
-            num += 1;
-        }
-        self.get(card.getKind()).put(card.getContent(), num);
-    }
-
     public void modifyPut(Card card) {
         if (cards.contains(card)) {
+            System.out.println(card.toString() + "\t凑成了一对被放到桌面");
             removeCard(card);
             putToDeskDeck(card);
             putToDeskDeck(card);
         } else {
             cards.add(card);
-            self.computeIfAbsent(card.getKind(), k -> new HashMap<>());
-            Integer num = self.get(card.getKind()).get(card.getContent());
+            count.computeIfAbsent(card.getKind(), k -> new HashMap<>());
+            Integer num = count.get(card.getKind()).get(card.getContent());
             if (num == null) {
                 num = 1;
             } else {
                 num += 1;
             }
-            self.get(card.getKind()).put(card.getContent(), num);
+            count.get(card.getKind()).put(card.getContent(), num);
         }
     }
 
-    public Card removeCard(Card card) {
+    public void removeCard(Card card) {
         cards.remove(card);
-        self.computeIfAbsent(card.getKind(), k -> new HashMap<>());
-        Integer num = self.get(card.getKind()).get(card.getContent());
+        count.computeIfAbsent(card.getKind(), k -> new HashMap<>());
+        Integer num = count.get(card.getKind()).get(card.getContent());
         if (num == null || num == 0) {
             num = 0;
         } else {
             num -= 1;
         }
-        self.get(card.getKind()).put(card.getContent(), num);
-        putToDeskDeck(card);
-        putToDeskDeck(card);
-        return card;
+        count.get(card.getKind()).put(card.getContent(), num);
     }
 
     public List<Card> getKind(String kind) {
@@ -137,16 +117,28 @@ public class Deck {
 
 
     public void viewDeck() {
-        Set<String> kindSet = self.keySet();
+        Set<String> kindSet = count.keySet();
         for (String string : kindSet) {
             System.out.println(string + ":");
-            Map<String, Integer> countMap = self.get(string);
+            Map<String, Integer> countMap = count.get(string);
             Set<String> contentSet = countMap.keySet();
             for (String string2 : contentSet) {
-                System.out.println(string2 + ":" + countMap.get(string2) + "张");
+                if (countMap.get(string2) > 0) {
+                    System.out.println(string2 + ":" + countMap.get(string2) + "张");
+                }
             }
         }
     }
 
-
+    public void showCount() {
+        count.forEach((key, value) -> {
+            int cardNum = 0;
+            for (Map.Entry<String, Integer> kindEntry : value.entrySet()) {
+                cardNum += kindEntry.getValue();
+            }
+            if (cardNum > 0) {
+                System.out.println(key + ":" + cardNum + "张");
+            }
+        });
+    }
 }

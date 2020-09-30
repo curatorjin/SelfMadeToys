@@ -27,18 +27,5 @@ abstract class Player {
 		return list;
 	}
 	
-	public void modify() {
-		List<Card> list = new ArrayList<>(getHandStuff());
-		List<Card> hand = new ArrayList<>();
-		for (Card card : list) {
-			if (hand.contains(card)) {
-				handStuff.removeCard(card);
-			}else {
-				hand.add(card);
-			}
-		}
-		getHandDeck().setCards(hand);
-	}
-	
-	abstract Card draw(Player player, BufferedReader br);
+	abstract void draw(Player player, BufferedReader br);
 }

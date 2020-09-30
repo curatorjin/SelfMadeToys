@@ -3,7 +3,6 @@ package io.github.curatorjin.detectivecardgame;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +12,7 @@ public class Main {
         Player[] players = new Player[]{new Man(), new Ai(), new Ai(), new Ai()};
         System.out.println("发牌……");
         for (int i = 0; i < Deck.originDeck.size(); i++) {
-            players[i % 4].getHandDeck().put(Deck.originDeck.get(i));
-        }
-        for (Player player : players) {
-            player.modify();
+            players[i % 4].getHandDeck().modifyPut(Deck.originDeck.get(i));
         }
         System.out.println("现在的桌面：");
         Deck.viewDeskDeck();
@@ -24,11 +20,11 @@ public class Main {
         try {
             br = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
             int round = 1;
-            while (round <= 20) {
+            while (round <= 40) {
                 System.out.println("第" + round + "轮……");
                 if (players[round % 4] instanceof Man) {
                     System.out.println("请选择要进行的操作：\r\n"
-                            + "1.抽牌 \t 2.查看手牌 \t 3.查看桌面牌堆 \t 4.推断");
+                            + "1.抽牌 \t 2.查看手牌 \t 3.查看桌面牌堆 \t 4.观察其他玩家 \t 5.推断");
                     String input = br.readLine();
                     switch (input) {
                         case "1":
@@ -42,6 +38,15 @@ public class Main {
                             Deck.viewDeskDeck();
                             break;
                         case "4":
+                            for (Player player : players) {
+                                if (player.equals(players[round % 4])) {
+                                    continue;
+                                }
+                                System.out.println("一玩家持有：");
+                                player.getHandDeck().showCount();
+                            }
+                            break;
+                        case "5":
                             boolean[] confirmAnswer = new boolean[]{false, false, false, false};
                             List<Card> playerAnswer = new ArrayList<>();
                             //noinspection InfiniteLoopStatement
@@ -159,6 +164,7 @@ public class Main {
                                     for (Card card : Deck.answer) {
                                         System.out.println(card.getKind() + "：" + card.getContent());
                                     }
+                                    return;
                                 }
                             }
                         default:
