@@ -8,3 +8,4 @@
 [图片文件转换器](python/png_file_converter)|Python
 [githubHost文件查询器](python/github_host_spider)|Python
 [加特林法杖](python/gatling_wand)|Python
+[图片像素收敛器](python/pic_convergence)|Python
