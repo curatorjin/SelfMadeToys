@@ -99,7 +99,7 @@ def main():
     parser.add_argument('--input', default='data/test.png', help='输入图片路径')
     parser.add_argument('--output', default='data/out.png', help='输出图片路径')
     parser.add_argument('--target-size', default='640x360', type=parse_size, help='降采样目标分辨率上限，如 640x360；传 none 跳过降采样')
-    parser.add_argument('--palette', default=r'F:\Godot_WorkSpace\ADVofRoucart\docs\art\palette\jianshi_palette_v0.6_aseprite.gpl', help='.gpl 色板路径')
+    parser.add_argument('--palette', required=True, help='.gpl 色板路径')
     args = parser.parse_args()
     target_size = args.target_size
     size, points = read_pic(args.input, target_size)
